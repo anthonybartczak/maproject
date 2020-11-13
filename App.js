@@ -1,6 +1,6 @@
-import { StatusBar } from 'expo-status-bar';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, ActivityIndicator, FlatList} from 'react-native';
+import { PieChart } from 'react-minimal-pie-chart';
 
 export default function App() {
   
@@ -14,36 +14,48 @@ export default function App() {
         'https://corona.lmao.ninja/v2/countries/Poland/'
       );
       let json = await response.json();
+      delete json['countryInfo']
       console.log(json)
       setData(json)
       setLoading(false)
-      //return json.movies;
     } catch (error) {
       console.error(error);
     }
   };
 
-  const fetchCoronaDataTest = async () => {
-    console.log("success")
-  };
- 
-
   return (
     <ScrollView style={{backgroundColor: '#e7e7de'}}>
+      
         <TouchableOpacity onPress={fetchCoronaData}>
           <View style={styles.topBar}>
             <Text style={styles.topText}>Fetch data</Text>
           </View>
         </TouchableOpacity>
+
         <View style={{ flex: 1, padding: 24 }}>
           {isLoading ? <ActivityIndicator/> : (
-            <FlatList
-              data={data}
-              keyExtractor={({ id }, index) => id}
-              renderItem={({ item }) => (
-                <Text>{item.title}, {item.releaseYear}</Text>
-              )}
-            />
+            <View>
+              <Text>Cases today: {data.todayCases}</Text>
+              <Text>Cases total: {data.cases}</Text>
+              <Text>Deaths today: {data.todayDeaths}</Text>
+              <Text>Deaths total: {data.deaths}</Text>
+              <PieChart
+                label={({ dataEntry }) => dataEntry.value}
+                labelStyle={(index) => ({
+                  fontSize: '5px',
+                  fontFamily: 'sans-serif',
+                })}
+                labelPosition={60}
+                animate
+                radius={30}
+                lineWidth={15}
+                paddingAngle={5}
+                data={[
+                  { title: 'One', value: data.todayCases, color: '#E38627' },
+                  { title: 'Two', value: data.todayRecovered, color: '#C13C37' },
+                ]}
+              />
+            </View>
           )}
         </View>
     </ScrollView>
