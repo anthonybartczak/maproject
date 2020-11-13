@@ -35,10 +35,13 @@ export default function App() {
         <View style={{ flex: 1, padding: 24 }}>
           {isLoading ? <ActivityIndicator/> : (
             <View>
-              <Text>Cases today: {data.todayCases}</Text>
-              <Text>Cases total: {data.cases}</Text>
-              <Text>Deaths today: {data.todayDeaths}</Text>
-              <Text>Deaths total: {data.deaths}</Text>
+              <View>
+                <Text styles={styles.dataStyles}>Cases today: {data.todayCases}</Text>
+                <Text styles={styles.dataStyles}>Cases total: {data.cases}</Text>
+                <Text> </Text>
+                <Text styles={styles.dataStyles}>Deaths today: {data.todayDeaths}</Text>
+                <Text styles={styles.dataStyles}>Deaths total: {data.deaths}</Text>
+              </View>
               <PieChart
                 label={({ dataEntry }) => dataEntry.value}
                 labelStyle={(index) => ({
@@ -78,5 +81,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 20,
     color: '#f4f4f2',
-  }
+  },
+  dataStyles: {
+    textAlign: "center",
+    fontFamily: 'sans-serif',
+    fontSize: '8px'
+  },
 });
