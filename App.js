@@ -8,22 +8,29 @@ export default function App() {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
-  const getStatsFromApiAsync = async () => {
+  const fetchCoronaData = async () => {
     try {
       let response = await fetch(
-        'https://reactnative.dev/movies.json'
+        'https://corona.lmao.ninja/v2/countries/Poland/'
       );
       let json = await response.json();
-      setData(json.data)
+      console.log(json)
+      setData(json)
       setLoading(false)
+      //return json.movies;
     } catch (error) {
       console.error(error);
     }
   };
 
+  const fetchCoronaDataTest = async () => {
+    console.log("success")
+  };
+ 
+
   return (
     <ScrollView style={{backgroundColor: '#e7e7de'}}>
-        <TouchableOpacity onPress={getStatsFromApiAsync}>
+        <TouchableOpacity onPress={fetchCoronaData}>
           <View style={styles.topBar}>
             <Text style={styles.topText}>Fetch data</Text>
           </View>
