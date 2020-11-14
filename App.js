@@ -6,17 +6,16 @@ import { PieChart } from "react-native-chart-kit";
 export default function App() {
   
 
-  const [isLoading, setLoading] = useState(true);
-  const [data, setData] = useState([]);
+  const [isLoading, setLoading] = useState(true); // Loading global variable
+  const [data, setData] = useState([]); // Data global variable
 
   const fetchCoronaData = async () => {
     try {
-      let response = await fetch(
+      let response = await fetch( // Fetch COVID-19 stats
         'https://corona.lmao.ninja/v2/countries/Poland/'
       );
-      let json = await response.json();
-      delete json['countryInfo']
-      console.log(json)
+      let json = await response.json(); // Transform API response into json
+      delete json['countryInfo'] // Drop country info
       setData(json)
       setLoading(false)
     } catch (error) {
@@ -24,15 +23,15 @@ export default function App() {
     }
   };
 
-  const screenWidth = Dimensions.get("window").width;
+  const screenWidth = Dimensions.get("window").width; // Get screenwidth
 
-  const chartConfig = {
+  const chartConfig = { // Pie chart configuration
     backgroundGradientFrom: "#1E2923",
     backgroundGradientFromOpacity: 0,
     backgroundGradientTo: "#08130D",
     backgroundGradientToOpacity: 0.5,
     color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
-    strokeWidth: 2, // optional, default 3
+    strokeWidth: 2,
     barPercentage: 0.5,
     useShadowColorFromDataset: false,
     propsForLabels: {
@@ -41,24 +40,24 @@ export default function App() {
     },
   };
 
-  const PCdata = [
+  const PCdata = [ // Set Piechart data
     {
       name: "cases",
-      population: data.todayCases,
+      population: data.todayCases, // Get todayCases from data variable
       color: "#E64D3E",
       legendFontColor: "#040c16",
       legendFontSize: 15
     },
     {
       name: "recovered",
-      population: data.todayRecovered,
+      population: data.todayRecovered, // Get todayRecovered from data variable
       color: "#C1E610",
       legendFontColor: "#040c16",
       legendFontSize: 15
     },
     {
       name: "deaths",
-      population: data.todayDeaths,
+      population: data.todayDeaths, // Get todayDeaths from data variable
       color: "#277DE6",
       legendFontColor: "#040c16",
       legendFontSize: 15
@@ -67,7 +66,7 @@ export default function App() {
 
   return (
     <ScrollView style={{backgroundColor: '#e7e7de'}}>
-
+    
         <TouchableOpacity onPress={fetchCoronaData}>
           <View style={styles.topBar}>
             <Text style={styles.topText}>Fetch data</Text>
@@ -75,7 +74,7 @@ export default function App() {
         </TouchableOpacity>
 
         <View>
-          {isLoading ? <ActivityIndicator/> : (
+          {isLoading ? <ActivityIndicator/> : ( // Wait till loading is false
             <View>
               <View style={styles.dataDesign}>
                 <Text style={styles.dataStyles}>{data.todayCases}</Text>
@@ -90,7 +89,8 @@ export default function App() {
                 <Text style={styles.dataStyles}>{data.deaths}</Text>
                 <Text style={styles.labelStyles}>total deaths</Text>
               </View>
-              <PieChart
+
+              <PieChart // Add Piechart
                 data={PCdata}
                 width={screenWidth}
                 height={220}
@@ -109,17 +109,17 @@ export default function App() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
+const styles = StyleSheet.create({ // Add stylesheets
+  container: { // Global style
     flex: 1,
     backgroundColor: '#31326f',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  dataDesign: {
+  dataDesign: { // Data view style
     marginBottom: 70,
   },
-  topBar: {
+  topBar: { // Fetch button style
     flex: 1,
     backgroundColor: '#0f3057',
     marginBottom: 40,
@@ -131,34 +131,22 @@ const styles = StyleSheet.create({
     borderRadius:10,
     borderWidth: 1,
   },
-  topText: {
+  topText: { // Fetch button text style
     textAlign: "center",
     fontSize: 30,
     color: '#f4f4f2',
   },
-  dataStyles: {
+  dataStyles: { // Data display style
     textAlign: "center",
     fontSize: 25,
     fontWeight: 'bold',
     fontFamily: 'sans-serif',
     color: '#0f3057',
   },
-  labelStyles: {
+  labelStyles: { // Data label style
     textAlign: "center",
     fontSize: 19,
     fontFamily: 'sans-serif',
     marginBottom: 15,
   },
-  circleOrange: {
-    width: 25,
-    height: 25,
-    borderRadius: 100/2,
-    backgroundColor: '#E38627'
-  },
-  circleRed: {
-    width: 25,
-    height: 25,
-    borderRadius: 100/2,
-    backgroundColor: '#C13C37'
-}
 });

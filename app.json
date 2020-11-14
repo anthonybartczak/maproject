@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "TaskOrganizer",
-    "slug": "TaskOrganizer",
+    "name": "CPLstats",
+    "slug": "CPLstats",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
